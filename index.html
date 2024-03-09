@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Display Photos</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1 id="title">Eric and Kai's Visual Cookbook</h1>
+    <div id="recipeContainer">
+        <select id="recipeSelect"></select>
+        <div id="recipeInfo">
+            <h1 id="recipeTitle"></h1>
+            <img id="recipeImage" src="" alt="Recipe Image">
+            <p><strong>Summary:</strong> <span id="recipeSummary"></span></p>
+            <h2>Ingredients:</strong></h2>
+            <div id="recipeIngredients"></div>
+            <div id="photoContainer"></div>
+            <h2>Instructions:</strong></h2>
+            <div id="recipeSteps"></div> 
+            <div id="recipeNutrition">
+                <h2>Nutrition Information</h2>
+                <ul id="nutritionList"></ul> 
+            </div>
+        </div>
+        <h2 id="videoTitle">Video Resource</h2>
+        <iframe id="videoFrame" width="560" height="315" frameborder="0" allowfullscreen></iframe>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

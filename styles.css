@@ -1,0 +1,76 @@
+/* styles.css */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+#title {
+    text-align: center;
+    margin-top: 20px;
+}
+
+#recipeContainer {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+#recipeSelect {
+    margin-bottom: 20px;
+}
+
+#recipeInfo {
+    margin-top: 20px;
+}
+
+#recipeImage {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    height: auto;
+}
+
+#recipeSummary {
+    margin-top: 10px;
+}
+
+#recipeIngredients {
+    margin-top: 10px;
+}
+
+
+#recipeIngredients {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    margin-top: 10px;
+}
+
+.ingredient-container {
+    flex: 0 0 auto; /* Allow the container to grow and shrink as needed */
+    width: 200px; /* Set a fixed width for each ingredient container */
+    margin-right: 20px; /* Add some spacing between ingredients */
+}
+
+.ingredient-name {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.ingredient-photo {
+    width: 100%; /* Make the photo fill the container */
+    height: auto; /* Maintain aspect ratio */
+    margin-bottom: 5px; /* Add some spacing between the photo and the name */
+}
+
+
+#recipeSteps {
+    margin-top: 20px;
+}
+
+#videoFrame {
+    display: block;
+    margin: 20px auto;
+}
