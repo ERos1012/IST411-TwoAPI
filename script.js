@@ -1,39 +1,54 @@
 const photoContainer = document.getElementById('photoContainer');
 const recipeContainer = document.getElementById('recipeContainer');
-const initialRecipeID = '718932';
-const Spoonacular_API_KEY = '277f8a8fff9d4ed1a9dc354dea21526c';
-const Youtube_API_KEY = 'AIzaSyAGhro5eOUWpNMqqVKuWce_6eiLGK472Oo';
+const Spoonacular_API_KEY = '7c4a6cebd64348b5afe9ee948e12de1d';
+const Youtube_API_KEY = 'AIzaSyBZPdorIlHhgq8ZSL-aQ6fiqe95WTZJPAc';
 const Pixabay_API_KEY = '22850428-9964a4ca16315545d67c15abc';
 
-
-
 document.addEventListener("DOMContentLoaded", function() {
+    fetchInitialRecipes();
+
+    // toggle video resource
+    const videoButton = document.getElementById('videoCheckbox');
+    videoButton.addEventListener('change', toggleVideoResource);
+
+    // select recipe
     const selectElement = document.getElementById('recipeSelect');
-    fetchRecipeInformation(initialRecipeID);
-    const recipes = [
-        { id: '718932', title: 'Recipe 1' }, // Replace with actual recipe IDs and titles
-        { id: '716432', title: 'Recipe 2' },
-        // Add more recipes as needed
-    ];
-
-    // Populate the dropdown menu with options
-    recipes.forEach(recipe => {
-        const option = document.createElement('option');
-        option.value = recipe.id;
-        option.textContent = recipe.title;
-        selectElement.appendChild(option);
-    });
-
-    // Add event listener for the change event on the dropdown menu
     selectElement.addEventListener('change', function(event) {
         const selectedRecipeId = event.target.value;
         fetchRecipeInformation(selectedRecipeId);
     });
 });
 
+function fetchInitialRecipes() {
+    const htmlRequest = new XMLHttpRequest();
+    htmlRequest.open("GET", `https://api.spoonacular.com/recipes/random?number=3&apiKey=${Spoonacular_API_KEY}`, true);
+    htmlRequest.onload = function() {
+        if (htmlRequest.status === 200) {
+            const recipeInfo = JSON.parse(htmlRequest.responseText);
+            const recipes = recipeInfo.recipes.map(recipe => ({ id: recipe.id, title: recipe.title }));
+            populateSelectElement(recipes);
+            fetchRecipeInformation(recipeInfo.recipes[0].id)
+        } else {
+            console.error('Request failed with status:', htmlRequest.status);
+        }
+    };
+    htmlRequest.send();
+}
+
+function populateSelectElement(recipes) {
+    const selectElement = document.getElementById('recipeSelect');
+    recipes.forEach(recipe => {
+        const option = document.createElement('option');
+        option.value = recipe.id;
+        option.textContent = recipe.title;
+        selectElement.appendChild(option);
+    });
+}
+
+
 function fetchPhotos(ingredients) {
     const recipeIngredients = document.getElementById('recipeIngredients');
-    recipeIngredients.innerHTML = ''; // Clear existing content
+    recipeIngredients.innerHTML = '';
 
     ingredients.forEach(ingredient => {
         const encodedQuery = encodeURIComponent(ingredient);
@@ -46,23 +61,23 @@ function fetchPhotos(ingredients) {
                     const photo = photos[0]; 
                     const imageUrl = photo.webformatURL;
                     
-                    // Create a container for the ingredient and its photo
+                    // Logic for fetching and displaying photos
+                    // Ingredients Name
                     const ingredientContainer = document.createElement('div');
                     ingredientContainer.classList.add('ingredient-container');
 
-                    // Create a div for the ingredient name
                     const ingredientName = document.createElement('div');
                     ingredientName.textContent = ingredient;
                     ingredientName.classList.add('ingredient-name');
                     ingredientContainer.appendChild(ingredientName);
 
-                    // Create an img element for the photo
+                    // Ingredients Photo
                     const img = document.createElement('img');
                     img.src = imageUrl;
-                    img.classList.add('ingredient-photo'); // Add a class for styling
+                    img.classList.add('ingredient-photo'); 
                     ingredientContainer.appendChild(img);
 
-                    // Append the ingredient container to the recipeIngredients container
+                    // Overall Ingredients 
                     recipeIngredients.appendChild(ingredientContainer);
                 } else {
                     console.error(`There is no photo for ${ingredient}`);
@@ -87,7 +102,7 @@ function fetchRecipeInformation(recipeId) {
             const recipeSummaryElement = document.getElementById('recipeSummary');
             const recipeIngredientsElement = document.getElementById('recipeIngredients');
             const recipeStepsElement = document.getElementById('recipeSteps');
-            const nutritionListElement = document.getElementById('nutritionList'); // Element for nutrition list
+            const nutritionListElement = document.getElementById('nutritionList'); 
 
             recipeTitleElement.textContent = recipeInfo.title;
             recipeImageElement.src = recipeInfo.image;
@@ -97,7 +112,6 @@ function fetchRecipeInformation(recipeId) {
             if (recipeInfo.extendedIngredients && recipeInfo.extendedIngredients.length > 0) {
                 const ingredients = recipeInfo.extendedIngredients.map(ingredient => ingredient.name);
                 console.log("Ingredients: " + ingredients);
-                // Call fetchPhotos with ingredients as query
                 fetchPhotos(ingredients);
             } else {
                 recipeIngredientsElement.textContent = 'No ingredients available.';
@@ -115,9 +129,8 @@ function fetchRecipeInformation(recipeId) {
             // Display nutrition information
             if (recipeInfo.nutrition && recipeInfo.nutrition.nutrients) {
                 const nutrients = recipeInfo.nutrition.nutrients;
-                // Clear previous content
                 nutritionListElement.innerHTML = '';
-                // Populate nutrition list
+
                 nutrients.forEach(nutrient => {
                     const listItem = document.createElement('li');
                     listItem.textContent = `${nutrient.name}: ${nutrient.amount}${nutrient.unit}`;
@@ -136,19 +149,17 @@ function fetchRecipeInformation(recipeId) {
 }
 
 
-
-
 function fetchYoutubeVideo(recipeTitle) {
-    const encodedQuery = encodeURIComponent(recipeTitle); // URL encode the recipe title
+    const encodedQuery = encodeURIComponent(recipeTitle); 
     const youtubeRequest = new XMLHttpRequest();
     youtubeRequest.open("GET", `https://www.googleapis.com/youtube/v3/search?key=${Youtube_API_KEY}&q=${encodedQuery}&part=snippet&type=video`, true);
     youtubeRequest.onload = function() {
         if (youtubeRequest.status === 200) {
             const response = JSON.parse(youtubeRequest.responseText);
             const videoId = response.items[0].id.videoId;
-            const videoUrl = `https://www.youtube.com/embed/${videoId}`; // Embed URL
+            const videoUrl = `https://www.youtube.com/embed/${videoId}`;
             const videoFrame = document.getElementById('videoFrame');
-            videoFrame.src = videoUrl; // Set iframe src
+            videoFrame.src = videoUrl; 
         } else {
             console.error('Request failed with status:', youtubeRequest.status);
         }
@@ -156,3 +167,15 @@ function fetchYoutubeVideo(recipeTitle) {
     youtubeRequest.send();
 }
 
+function toggleVideoResource() {
+    const videoFrame = document.getElementById('videoFrame');
+    const videoButton = document.getElementById('videoCheckbox');
+
+    if (videoFrame.style.display === 'none') {
+        videoFrame.style.display = 'block';
+        videoButton.classList.add('active');
+    } else {
+        videoFrame.style.display = 'none';
+        videoButton.classList.remove('active');
+    }
+}
