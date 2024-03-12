@@ -11,3 +11,14 @@ The three APIs used are the following:
 - The main API used to fetch recipe information like ingredients, summary and steps
 3. YouTube API
 - API used to add a video resource for users to watch in making the recipes
+
+**Three Interactions**
+1. Dropdown menu
+- Used to select the recipe
+2. Radio Button
+- Used to select the specific background color
+3. Checkbox
+- Used to toggle the video resource located at the bottom of the page
+
+**Where is the table?**
+- The table is used to display the recipe's nutrional data such as calories and carbohydrates
