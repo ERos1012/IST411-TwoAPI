@@ -123,7 +123,6 @@ function fetchRecipeInformation(recipeId) {
             if (recipeInfo.extendedIngredients && recipeInfo.extendedIngredients.length > 0) {
                 const ingredients = recipeInfo.extendedIngredients.map(ingredient => ingredient.name);
                 console.log("Ingredients: " + ingredients);
-                // Call fetchPhotos with ingredients as query
                 fetchPhotos(ingredients);
             } else {
                 recipeIngredientsElement.textContent = 'No ingredients available.';
@@ -141,9 +140,7 @@ function fetchRecipeInformation(recipeId) {
             // Display nutrition information in a table
             if (recipeInfo.nutrition && recipeInfo.nutrition.nutrients) {
                 const nutrients = recipeInfo.nutrition.nutrients;
-                // Clear previous content
                 nutritionTable.innerHTML = '';
-                // Populate nutrition table
                 nutrients.forEach(nutrient => {
                     const row = nutritionTable.insertRow();
                     const nameCell = row.insertCell(0);
