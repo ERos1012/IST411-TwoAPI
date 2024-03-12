@@ -152,7 +152,6 @@ function fetchRecipeInformation(recipeId) {
     htmlRequest.send();
 }
 
-
 function fetchYoutubeVideo(recipeTitle) {
     const encodedQuery = encodeURIComponent(recipeTitle); 
     const youtubeRequest = new XMLHttpRequest();
