@@ -17,6 +17,17 @@ document.addEventListener("DOMContentLoaded", function() {
         const selectedRecipeId = event.target.value;
         fetchRecipeInformation(selectedRecipeId);
     });
+
+    // change background color
+    const radioButtons = document.querySelectorAll('input[name="Color"]');
+    radioButtons.forEach(radioButton => {
+        radioButton.addEventListener('change', function(event) {
+            if (event.target.checked) {
+                const selectedColor = event.target.value;
+                changeBackgroundColor(selectedColor);
+            }
+        });
+    });
 });
 
 function fetchInitialRecipes() {
@@ -181,4 +192,8 @@ function toggleVideoResource() {
         videoFrame.style.display = 'none';
         videoButton.classList.remove('active');
     }
+}
+
+function changeBackgroundColor(color) {
+    document.body.style.backgroundColor = color;
 }
