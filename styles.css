@@ -75,6 +75,14 @@ body {
 #nutritionInfo{
     margin-top: 20px;
     font-size: 20px;
+    font-weight: bold;
+    
+}
+
+#nutritionTable {
+    width: 35%;
+    border: solid;
+    background-color: white;
 }
 
 #videoFrame {

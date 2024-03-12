@@ -102,7 +102,7 @@ function fetchRecipeInformation(recipeId) {
             const recipeSummaryElement = document.getElementById('recipeSummary');
             const recipeIngredientsElement = document.getElementById('recipeIngredients');
             const recipeStepsElement = document.getElementById('recipeSteps');
-            const nutritionListElement = document.getElementById('nutritionList'); // Element for nutrition list
+            const nutritionTable = document.getElementById('nutritionTable'); // Element for nutrition table body
 
             recipeTitleElement.textContent = recipeInfo.title;
             recipeImageElement.src = recipeInfo.image;
@@ -112,6 +112,7 @@ function fetchRecipeInformation(recipeId) {
             if (recipeInfo.extendedIngredients && recipeInfo.extendedIngredients.length > 0) {
                 const ingredients = recipeInfo.extendedIngredients.map(ingredient => ingredient.name);
                 console.log("Ingredients: " + ingredients);
+                // Call fetchPhotos with ingredients as query
                 fetchPhotos(ingredients);
             } else {
                 recipeIngredientsElement.textContent = 'No ingredients available.';
@@ -130,23 +131,17 @@ function fetchRecipeInformation(recipeId) {
             if (recipeInfo.nutrition && recipeInfo.nutrition.nutrients) {
                 const nutrients = recipeInfo.nutrition.nutrients;
                 // Clear previous content
-                nutritionListElement.innerHTML = '';
-                // Populate nutrition list
+                nutritionTable.innerHTML = '';
+                // Populate nutrition table
                 nutrients.forEach(nutrient => {
-                    const row = document.createElement('tr');
-                    const nameCell = document.createElement('td');
+                    const row = nutritionTable.insertRow();
+                    const nameCell = row.insertCell(0);
+                    const amountCell = row.insertCell(1);
                     nameCell.textContent = nutrient.name;
-                    const amountCell = document.createElement('td');
                     amountCell.textContent = `${nutrient.amount}${nutrient.unit}`;
-                    row.appendChild(nameCell);
-                    row.appendChild(amountCell);
-                    nutritionTableElement.appendChild(row);
                 });
-
-                // Show the nutrition table
-                nutritionInfoElement.style.display = 'block';
             } else {
-                nutritionInfoElement.textContent = 'No nutrition information available.';
+                nutritionTable.innerHTML = '<tr><td colspan="2">No nutrition information available.</td></tr>';
             }
 
             fetchYoutubeVideo(recipeInfo.title);
@@ -156,8 +151,6 @@ function fetchRecipeInformation(recipeId) {
     };
     htmlRequest.send();
 }
-
-
 
 
 function fetchYoutubeVideo(recipeTitle) {
